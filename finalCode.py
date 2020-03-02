@@ -22,6 +22,9 @@ import copy
 # of the parking so plan your cars accordingly
 # ─────────────────────────────────────────────────────────────────── NOTICE ─────
 
+# FIXME check for car number being correct in the input
+# FIXME check for overlapping cars
+
 initList = [
 [5,6,7],
 [3,3,'h',2],
@@ -160,6 +163,8 @@ class car:
 # ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 states.append(state(initList,0))
+
+# FIXME check if the puzzle is unsolvable
 
 # ────────────────────────────────────────────────────────────────────────────────────────────────── IV ──────────
 #   :::::: C R E A T I N G   N E W   S T A T E S   I N   A   L O O P : :  :   :    :     :        :          :
