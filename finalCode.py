@@ -22,9 +22,6 @@ import copy
 # of the parking so plan your cars accordingly
 # ─────────────────────────────────────────────────────────────────── NOTICE ─────
 
-# FIXME check for car number being correct in the input
-# FIXME check for overlapping cars
-
 initList = [
 [5,6,7],
 [3,3,'h',2],
