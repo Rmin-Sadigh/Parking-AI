@@ -41,6 +41,9 @@ idCounter = 0
 
 rows = initList[0][0]
 cols = initList[0][1]
+if initList[0][2] != len(initList)-1:
+    print("The number of cars in the first array does not match the number of cars defined afterwards. The program will exit. edit the list and run the program again")
+    exit()
 carNum = initList[0][2]
 
 initList.pop(0)
