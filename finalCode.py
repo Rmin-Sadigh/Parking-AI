@@ -43,8 +43,6 @@ rows = initList[0][0]
 cols = initList[0][1]
 carNum = initList[0][2]
 
-initSchema = np.zeros((rows,cols),dtype=int)
-
 initList.pop(0)
 
 states = list()
