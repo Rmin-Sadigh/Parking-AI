@@ -73,12 +73,18 @@ class state:
                 startRow = carObj.orientation[0] - 1
                 endRow = startRow + carObj.orientation[3] -1
                 for j in range(startRow,endRow+1):
+                    if self.schema[j][col] != 0:
+                        print("Cars number {} and {} have overlap. The program will exit. Edit the list and run the code again.".format(self.schema[j][col],carObj.ID))
+                        exit()
                     self.schema[j][col]=carObj.ID
             else:
                 row = carObj.orientation[0] - 1
                 startCol = carObj.orientation[1] - 1
                 endCol = startCol + carObj.orientation[3] -1
                 for j in range(startCol,endCol+1):
+                    if self.schema[row][j] != 0:
+                        print("Cars number {} and {} have overlap. The program will exit. Edit the list and run the code again.".format(self.schema[row][j],carObj.ID))
+                        exit()
                     self.schema[row][j]=carObj.ID
         self.possibleMoves = dict()
         for carObj in self.cars:
