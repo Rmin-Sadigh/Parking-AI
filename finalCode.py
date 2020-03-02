@@ -168,8 +168,6 @@ class car:
 
 states.append(state(initList,0))
 
-# FIXME check if the puzzle is unsolvable
-
 # ────────────────────────────────────────────────────────────────────────────────────────────────── IV ──────────
 #   :::::: C R E A T I N G   N E W   S T A T E S   I N   A   L O O P : :  :   :    :     :        :          :
 # ────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -193,3 +191,6 @@ for stateObj in states:
                     exit()
             else:
                 state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1).relief()
+
+print("This puzzle can't be solved in any ways")
+exit()
