@@ -33,7 +33,7 @@ initList = [
 [4,6,'v',2]
 ]
 
-minMovesReq = 1000
+minMovesReq = 500
 idCounter = 0
 
 rows = initList[0][0]
