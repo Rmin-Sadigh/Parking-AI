@@ -23,12 +23,12 @@ import copy
 # ─────────────────────────────────────────────────────────────────── NOTICE ─────
 
 initList = [
-[5,6,5],
-[3,1,'h',2],
-[3,3,'v',2],
-[2,4,'v',2],
-[3,5,'v',2],
-[2,6,'v',2]
+    [5, 6, 5],
+    [3, 1, "h", 2],
+    [3, 3, "v", 2],
+    [2, 4, "v", 2],
+    [3, 5, "v", 2],
+    [2, 6, "v", 2],
 ]
 
 minMovesReq = 500
@@ -36,8 +36,10 @@ idCounter = 0
 
 rows = initList[0][0]
 cols = initList[0][1]
-if initList[0][2] != len(initList)-1:
-    print("The number of cars in the first array does not match the number of cars defined afterwards. The program will exit. edit the list and run the program again")
+if initList[0][2] != len(initList) - 1:
+    print(
+        "The number of cars in the first array does not match the number of cars defined afterwards. The program will exit. edit the list and run the program again"
+    )
     exit()
 carNum = initList[0][2]
 
@@ -45,6 +47,7 @@ initList.pop(0)
 
 states = list()
 successors = list()
+
 
 class state:
     def __init__(self, lst, step):
@@ -54,31 +57,39 @@ class state:
 
         idCounter = idCounter + 1
         self.ID = idCounter
-        
+
         self.lst = lst
         self.cars = list()
-        for i in range(1,len(lst)+1):
-            self.cars.append(car(i,lst[i-1]))
-        self.schema = np.zeros((rows,cols),dtype=int)
+        for i in range(1, len(lst) + 1):
+            self.cars.append(car(i, lst[i - 1]))
+        self.schema = np.zeros((rows, cols), dtype=int)
         for carObj in self.cars:
-            if carObj.orientation[2] == 'v':
+            if carObj.orientation[2] == "v":
                 col = carObj.orientation[1] - 1
                 startRow = carObj.orientation[0] - 1
-                endRow = startRow + carObj.orientation[3] -1
-                for j in range(startRow,endRow+1):
+                endRow = startRow + carObj.orientation[3] - 1
+                for j in range(startRow, endRow + 1):
                     if self.schema[j][col] != 0:
-                        print("Cars number {} and {} have overlap. The program will exit. Edit the list and run the code again.".format(self.schema[j][col],carObj.ID))
+                        print(
+                            "Cars number {} and {} have overlap. The program will exit. Edit the list and run the code again.".format(
+                                self.schema[j][col], carObj.ID
+                            )
+                        )
                         exit()
-                    self.schema[j][col]=carObj.ID
+                    self.schema[j][col] = carObj.ID
             else:
                 row = carObj.orientation[0] - 1
                 startCol = carObj.orientation[1] - 1
-                endCol = startCol + carObj.orientation[3] -1
-                for j in range(startCol,endCol+1):
+                endCol = startCol + carObj.orientation[3] - 1
+                for j in range(startCol, endCol + 1):
                     if self.schema[row][j] != 0:
-                        print("Cars number {} and {} have overlap. The program will exit. Edit the list and run the code again.".format(self.schema[row][j],carObj.ID))
+                        print(
+                            "Cars number {} and {} have overlap. The program will exit. Edit the list and run the code again.".format(
+                                self.schema[row][j], carObj.ID
+                            )
+                        )
                         exit()
-                    self.schema[row][j]=carObj.ID
+                    self.schema[row][j] = carObj.ID
         self.possibleMoves = dict()
         for carObj in self.cars:
             self.possibleMoves[carObj.ID] = carObj.calcMoves(self.schema)
@@ -86,11 +97,11 @@ class state:
                 del self.possibleMoves[carObj.ID]
 
     def moveCar(self, carID, moveStep):
-        return self.cars[carID-1].move(copy.deepcopy(self.lst),moveStep)
+        return self.cars[carID - 1].move(copy.deepcopy(self.lst), moveStep)
 
-    def checkUnique(self,checkList):
+    def checkUnique(self, checkList):
         for stateObj in states:
-            if np.array_equal(stateObj.lst,checkList):
+            if np.array_equal(stateObj.lst, checkList):
                 return False
             else:
                 continue
@@ -98,71 +109,74 @@ class state:
 
     def relief(self):
         for stateObj in states:
-            if np.array_equal(stateObj.schema,self.schema):
+            if np.array_equal(stateObj.schema, self.schema):
                 if stateObj.minMoves > self.minMoves:
                     stateObj.minMoves = copy.deepcopy(self.minMoves)
                     return
 
     def checkSucc(self):
-        if self.schema[initList[0][0]-1][cols-1] == 1:
+        if self.schema[initList[0][0] - 1][cols - 1] == 1:
             return True
         else:
             return False
+
 
 class car:
     def __init__(self, ID, orientation):
         self.ID = ID
         self.orientation = orientation
-    def calcMoves(self,schema):
+
+    def calcMoves(self, schema):
         domain = []
-        if self.orientation[2] == 'v':
+        if self.orientation[2] == "v":
             col = self.orientation[1] - 1
             startRow = self.orientation[0] - 1
-            endRow = startRow + self.orientation[3] -1
+            endRow = startRow + self.orientation[3] - 1
 
-            for i in range(startRow-1,-1,-1):
+            for i in range(startRow - 1, -1, -1):
                 if schema[i][col] == 0:
-                    domain.append(i-startRow)
+                    domain.append(i - startRow)
                 else:
                     break
 
-            for i in range(endRow+1,rows,1):
+            for i in range(endRow + 1, rows, 1):
                 if schema[i][col] == 0:
-                    domain.append(i-endRow)
+                    domain.append(i - endRow)
                 else:
                     break
         else:
             row = self.orientation[0] - 1
             startCol = self.orientation[1] - 1
-            endCol = startCol + self.orientation[3] -1
+            endCol = startCol + self.orientation[3] - 1
 
-            for i in range(startCol-1,-1,-1):
+            for i in range(startCol - 1, -1, -1):
                 if schema[row][i] == 0:
-                    domain.append(i-startCol)
+                    domain.append(i - startCol)
                 else:
                     break
 
-            for i in range(endCol+1,cols,1):
+            for i in range(endCol + 1, cols, 1):
                 if schema[row][i] == 0:
-                    domain.append(i-endCol)
+                    domain.append(i - endCol)
                 else:
                     break
 
-        return sorted(domain, reverse = True)
+        return sorted(domain, reverse=True)
 
-    def move(self,lst,moveStep):
-        if lst[self.ID-1][2] == 'v':
-            lst[self.ID-1][0] = lst[self.ID-1][0] + moveStep
+    def move(self, lst, moveStep):
+        if lst[self.ID - 1][2] == "v":
+            lst[self.ID - 1][0] = lst[self.ID - 1][0] + moveStep
             return lst
         else:
-            lst[self.ID-1][1] = lst[self.ID-1][1] + moveStep
+            lst[self.ID - 1][1] = lst[self.ID - 1][1] + moveStep
             return lst
+
 
 # ────────────────────────────────────────────────────────────────────────────────────────────────── III ──────────
 #   :::::: I N I T I A L I Z I N G   T H E   C A L C U L A T I O N S : :  :   :    :     :        :          :
 # ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-states.append(state(initList,0))
+states.append(state(initList, 0))
 
 # ────────────────────────────────────────────────────────────────────────────────────────────────── IV ──────────
 #   :::::: C R E A T I N G   N E W   S T A T E S   I N   A   L O O P : :  :   :    :     :        :          :
@@ -173,16 +187,29 @@ print("Please wait while calculations are being done")
 for stateObj in states:
     for key, value in stateObj.possibleMoves.items():
         for steps in value:
-            if(stateObj.minMoves >= minMovesReq):
+            if stateObj.minMoves >= minMovesReq:
                 break
-            if(stateObj.checkUnique(stateObj.moveCar(key, steps))):
-                if(key == 1 and steps > 0):
-                    states.insert(states.index(stateObj)+1, state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1))
+            if stateObj.checkUnique(stateObj.moveCar(key, steps)):
+                if key == 1 and steps > 0:
+                    states.insert(
+                        states.index(stateObj) + 1,
+                        state(
+                            stateObj.moveCar(key, steps),
+                            copy.deepcopy(stateObj.minMoves) + 1,
+                        ),
+                    )
                 else:
-                    states.append(state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1))
+                    states.append(
+                        state(
+                            stateObj.moveCar(key, steps),
+                            copy.deepcopy(stateObj.minMoves) + 1,
+                        )
+                    )
             else:
-                state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1).relief()
-    if(stateObj.checkSucc()):
+                state(
+                    stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1
+                ).relief()
+    if stateObj.checkSucc():
         successors.append(stateObj)
         minMovesReq = copy.deepcopy(min(stateObj.minMoves for stateObj in successors))
 
@@ -190,7 +217,7 @@ for stateObj in states:
 #   :::::: S H O W I N G   T H E   R E S U L T S : :  :   :    :     :        :          :
 # ────────────────────────────────────────────────────────────────────────────────────────
 
-if len(successors)>0:
+if len(successors) > 0:
     print("min moves required to solve this puzzle is= {}".format(minMovesReq))
 else:
     print("This puzzle can't be solved in any ways")
