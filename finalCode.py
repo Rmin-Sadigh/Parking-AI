@@ -180,11 +180,11 @@ for stateObj in states:
                     states.insert(states.index(stateObj)+1, state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1))
                 else:
                     states.append(state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1))
-                if(stateObj.checkSucc()):
-                    successors.append(stateObj)
-                    minMovesReq = copy.deepcopy(min(succ.minMoves for succ in successors))
             else:
                 state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1).relief()
+    if(stateObj.checkSucc()):
+        successors.append(stateObj)
+        minMovesReq = copy.deepcopy(min(stateObj.minMoves for stateObj in successors))
 
 if len(successors)>0:
     print("min moves required to solve this puzzle is= {}".format(minMovesReq))
