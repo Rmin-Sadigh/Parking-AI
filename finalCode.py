@@ -23,14 +23,12 @@ import copy
 # ─────────────────────────────────────────────────────────────────── NOTICE ─────
 
 initList = [
-[5,6,7],
-[3,3,'h',2],
-[1,2,'h',2],
-[1,4,'v',2],
-[1,5,'h',2],
-[2,2,'v',2],
-[2,6,'v',2],
-[4,6,'v',2]
+[5,6,5],
+[3,1,'h',2],
+[3,3,'v',2],
+[2,4,'v',2],
+[3,5,'v',2],
+[2,6,'v',2]
 ]
 
 minMovesReq = 500
@@ -57,8 +55,6 @@ class state:
         idCounter = idCounter + 1
         self.ID = idCounter
         
-        if self.minMoves >= minMovesReq:
-            return
         self.lst = lst
         self.cars = list()
         for i in range(1,len(lst)+1):
@@ -187,10 +183,12 @@ for stateObj in states:
                 if(stateObj.checkSucc()):
                     successors.append(stateObj)
                     minMovesReq = copy.deepcopy(min(succ.minMoves for succ in successors))
-                    print("min moves required to solve this puzzle is= {}".format(stateObj.minMoves))
-                    exit()
             else:
                 state(stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1).relief()
 
-print("This puzzle can't be solved in any ways")
+if len(successors)>0:
+    print("min moves required to solve this puzzle is= {}".format(minMovesReq))
+else:
+    print("This puzzle can't be solved in any ways")
+
 exit()
