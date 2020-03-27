@@ -186,6 +186,10 @@ for stateObj in states:
         successors.append(stateObj)
         minMovesReq = copy.deepcopy(min(stateObj.minMoves for stateObj in successors))
 
+# ────────────────────────────────────────────────────────────────────────────── V ──────────
+#   :::::: S H O W I N G   T H E   R E S U L T S : :  :   :    :     :        :          :
+# ────────────────────────────────────────────────────────────────────────────────────────
+
 if len(successors)>0:
     print("min moves required to solve this puzzle is= {}".format(minMovesReq))
 else:
