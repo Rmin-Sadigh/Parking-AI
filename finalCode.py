@@ -8,6 +8,10 @@
 
 import numpy as np
 import copy
+import itertools
+import threading
+import time
+import sys
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────────────── II ──────────
 #   :::::: I N I T I A L I Z I N G   V A R I A B L E S   A N D   O B J E C T S : :  :   :    :     :        :          :
@@ -47,6 +51,8 @@ initList.pop(0)
 
 states = list()
 successors = list()
+
+done = False
 
 
 class state:
@@ -172,17 +178,63 @@ class car:
             return lst
 
 
-# ────────────────────────────────────────────────────────────────────────────────────────────────── III ──────────
+#
+# ──────────────────────────────────────────────────────────────────────────────────────────────── III ──────────
+#   :::::: T H R E A D   F O R   L O A D I N G   A N I M A T I O N : :  :   :    :     :        :          :
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+#
+
+
+def animate():
+    for c in itertools.cycle(
+        [
+            "[|*       ]",
+            "[*/*      ]",
+            "[ *-*     ]",
+            "[  *\\*    ]",
+            "[   *|*   ]",
+            "[    */*  ]",
+            "[     *-* ]",
+            "[      *\\*]",
+            "[       *|]",
+            "[      */*]",
+            "[     *-* ]",
+            "[    *\\*  ]",
+            "[   *|*   ]",
+            "[  */*    ]",
+            "[ *-*     ]",
+            "[*\\*      ]",
+        ]
+    ):
+        if done:
+            break
+        sys.stdout.write("\rPlease wait while calculations are being done " + c)
+        sys.stdout.flush()
+        time.sleep(0.1)
+    # ────────────────────────────────────────────────────────────────────────────── IV ──────────
+    #   :::::: S H O W I N G   T H E   R E S U L T S : :  :   :    :     :        :          :
+    # ────────────────────────────────────────────────────────────────────────────────────────
+    sys.stdout.flush()
+    if len(successors) > 0:
+        sys.stdout.write(
+            "\rmin moves required to solve this puzzle is= {}".format(minMovesReq)
+        )
+    else:
+        sys.stdout.write("\rThis puzzle can't be solved in any ways")
+
+
+# ────────────────────────────────────────────────────────────────────────────────────────────────── V ──────────
 #   :::::: I N I T I A L I Z I N G   T H E   C A L C U L A T I O N S : :  :   :    :     :        :          :
 # ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 states.append(state(initList, 0))
 
-# ────────────────────────────────────────────────────────────────────────────────────────────────── IV ──────────
+t = threading.Thread(target=animate)
+t.start()
+
+# ────────────────────────────────────────────────────────────────────────────────────────────────── VI ──────────
 #   :::::: C R E A T I N G   N E W   S T A T E S   I N   A   L O O P : :  :   :    :     :        :          :
 # ────────────────────────────────────────────────────────────────────────────────────────────────────────────
-
-print("Please wait while calculations are being done")
 
 for stateObj in states:
     for key, value in stateObj.possibleMoves.items():
@@ -213,13 +265,4 @@ for stateObj in states:
         successors.append(stateObj)
         minMovesReq = copy.deepcopy(min(stateObj.minMoves for stateObj in successors))
 
-# ────────────────────────────────────────────────────────────────────────────── V ──────────
-#   :::::: S H O W I N G   T H E   R E S U L T S : :  :   :    :     :        :          :
-# ────────────────────────────────────────────────────────────────────────────────────────
-
-if len(successors) > 0:
-    print("min moves required to solve this puzzle is= {}".format(minMovesReq))
-else:
-    print("This puzzle can't be solved in any ways")
-
-exit()
+done = True
