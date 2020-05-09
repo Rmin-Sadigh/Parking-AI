@@ -6,8 +6,13 @@ This is an Object-Oriented AI designed to solve those little puzzles where you h
 
 -   You need the following libraries in your environment to run the script:
 
-    -   Numpy
-    -   Copy
+    -   numpy
+    -   copy
+    -   itertools
+    -   threading
+    -   time
+    -   os
+    -   sys
 
 -   🚨 Since inputting lists in python has its difficulties, the script is designed to have the input data in itself, so **before you run it, modify the input list according to your own puzzle**.
 
@@ -27,5 +32,5 @@ This is an Object-Oriented AI designed to solve those little puzzles where you h
 
 -   [ ] Implementing an input method with ease of usage ⌨
 -   [ ] Further improvement in computation time and state reviewing prioritization 🕖
--   [ ] Memory optimization 💾
+-   [x] Memory optimization 💾
 -   [ ] Code optimization 📜

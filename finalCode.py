@@ -11,6 +11,7 @@ import copy
 import itertools
 import threading
 import time
+import os
 import sys
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────────────── II ──────────
@@ -188,22 +189,15 @@ class car:
 def animate():
     for c in itertools.cycle(
         [
-            "[|*       ]",
-            "[*/*      ]",
-            "[ *-*     ]",
-            "[  *\\*    ]",
-            "[   *|*   ]",
-            "[    */*  ]",
-            "[     *-* ]",
-            "[      *\\*]",
-            "[       *|]",
-            "[      */*]",
-            "[     *-* ]",
-            "[    *\\*  ]",
-            "[   *|*   ]",
-            "[  */*    ]",
-            "[ *-*     ]",
-            "[*\\*      ]",
+            "[      <<<>>>      ]",
+            "[     <<<  >>>     ]",
+            "[    <<<    >>>    ]",
+            "[   <<<      >>>   ]",
+            "[  <<<        >>>  ]",
+            "[ <<<          >>> ]",
+            "[<<<            >>>]",
+            "[<<      <>      >>]",
+            "[<      <<>>      >]",
         ]
     ):
         if done:
@@ -217,16 +211,21 @@ def animate():
     sys.stdout.flush()
     if len(successors) > 0:
         sys.stdout.write(
-            "\rmin moves required to solve this puzzle is= {}".format(minMovesReq)
+            "\r!!       DONE. Min moves required to solve this puzzle is= {}      !!".format(
+                minMovesReq
+            )
         )
     else:
-        sys.stdout.write("\rThis puzzle can't be solved in any ways")
+        sys.stdout.write(
+            "\r!!!!!!        This puzzle can't be solved in any ways        !!!!!!"
+        )
 
 
 # ────────────────────────────────────────────────────────────────────────────────────────────────── V ──────────
 #   :::::: I N I T I A L I Z I N G   T H E   C A L C U L A T I O N S : :  :   :    :     :        :          :
 # ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
+os.system("cls")
 states.append(state(initList, 0))
 
 t = threading.Thread(target=animate)
