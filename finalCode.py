@@ -240,26 +240,18 @@ for stateObj in states:
         for steps in value:
             if stateObj.minMoves >= minMovesReq:
                 break
-            if stateObj.checkUnique(stateObj.moveCar(key, steps)):
-                if key == 1 and steps > 0:
-                    states.insert(
-                        states.index(stateObj) + 1,
-                        state(
-                            stateObj.moveCar(key, steps),
-                            copy.deepcopy(stateObj.minMoves) + 1,
-                        ),
-                    )
-                else:
-                    states.append(
-                        state(
-                            stateObj.moveCar(key, steps),
-                            copy.deepcopy(stateObj.minMoves) + 1,
-                        )
-                    )
-            else:
+            newState = copy.deepcopy(
                 state(
                     stateObj.moveCar(key, steps), copy.deepcopy(stateObj.minMoves) + 1
-                ).relief()
+                )
+            )
+            if stateObj.checkUnique(stateObj.moveCar(key, steps)):
+                if key == 1 and steps > 0:
+                    states.insert(states.index(stateObj) + 1, newState)
+                else:
+                    states.append(newState)
+            else:
+                newState.relief()
     if stateObj.checkSucc():
         successors.append(stateObj)
         minMovesReq = copy.deepcopy(min(stateObj.minMoves for stateObj in successors))
