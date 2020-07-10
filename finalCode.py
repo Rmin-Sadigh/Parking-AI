@@ -20,7 +20,7 @@ import sys
 
 # ─────────────────────────────────────────────────────────────────── NOTICE ─────
 # Edit this list according to your problem
-# first array represents [rows,colums,number of cars]
+# first array represents [rows,columns,number of cars]
 # the rest of the arrays are car positions
 # make sure the first car is the car you want to get out
 # exiting the parking is defined as reaching the right edge
